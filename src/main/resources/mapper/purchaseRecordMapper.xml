@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mystore.mapper.PurchaseRecordMapper" >
+   <!-- <resultMap id="BaseResultMap" type="com.domain.UserItemVO" >
+        <result column="ITEM_ID" property="itemId" jdbcType="int" />
+        <result column="USER_ID" property="userId" jdbcType="int" />
+        <result column="ITEM_NAME" property="ITEM_Name" jdbcType="varchar" />
+        <result column="ADDR" property="addr" jdbcType="varchar" />
+
+    </resultMap>-->
+   <insert id="insertPurchaseRecord" parameterType="purchaseRecord" >
+       INSERT INTO T_PURCHASE_RECORD(USER_ID,PRODUCT_ID,PRICE,QUANTITY,SUM,PURCHASE_DATE,NOTE)
+       VALUES(#{USERID},#{PRODUCTID},#{PRICE},#{QUANTITY},#{SUM},NOW(),#{NOTE})
+   </insert>
+</mapper>
+
