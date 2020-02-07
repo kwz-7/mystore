@@ -1,21 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mystore.mapper.ProductMappers" >
-   <!-- <resultMap id="BaseResultMap" type="com.domain.UserItemVO" >
+    <!--<resultMap id="BaseResultMap" type="com.domain.UserItemVO" >
+        &lt;!&ndash;主键匹配&ndash;&gt;
+        <id property="id" column="id"></id>
+        &lt;!&ndash;非主键匹配&ndash;&gt;
         <result column="ITEM_ID" property="itemId" jdbcType="int" />
         <result column="USER_ID" property="userId" jdbcType="int" />
         <result column="ITEM_NAME" property="ITEM_Name" jdbcType="varchar" />
-        <result column="ADDR" property="addr" jdbcType="varchar" />
+        <result column="ADDR" property="addr" javaType="" jdbcType="varchar" />
 
     </resultMap>-->
-     <select id="getProduct" parameterType="long" resultMap="product">
-         SELECT ID,PRODUCT_NAME AS PRODUCTNAME,STOCK,PRICE,VERSION,NOTE
-         FROM T_PRODUCT WHERE ID=#{ID}
+    <sql id="defaultSql" >
+         SELECT ID,PRODUCT_NAME AS PRODUCTNAME,STOCK,PRICE,NOTE ,version
+         FROM T_PRODUCT
+    </sql>
+     <select id="getProduct" parameterType="long" resultType="product">
+         SELECT ID,PRODUCT_NAME AS PRODUCTNAME,STOCK,PRICE,NOTE ,version
+         FROM T_PRODUCT WHERE ID=#{ID} for UPDATE
 
      </select>
     <!--减少库存-->
-    <select id="decreaseProduct" >
-        UPDATE T_PRODUCT SET STOCK=STOCK-#{QUANTITY} WHERE ID =#{ID}
+    <update id="decreaseProduct" >
+        UPDATE T_PRODUCT SET STOCK=STOCK-#{QUANTITY},version=version+1 WHERE ID =#{ID} and version=#{version}
+    </update>
+    <!--插入产品信息-->
+    <insert id="insertProduct" parameterType="product">
+       <selectKey keyProperty="id" keyColumn="id" resultType="Long" order="AFTER" >
+           SELECT LAST_INSERT_ID()
+       </selectKey>
+        INSERT INTO t_product (product_name,stock,price,note,VERSION) VALUES(#{productName},#{stock},#{price},#{note},#{version})
+    </insert>
+    <!--查询使用动态sql-->
+    <select id="getByProductPo" parameterType="product" resultType="product" >
+
+        <where>
+         <if test="productName  != null">
+             product_Name=#{productName}
+         </if>
+    </where>
+    </select>
+    <select id="getByProductIds" resultType="product" parameterType="product" >
+        <include refid="defaultSql"></include>
+        <where>
+             <if test=" ids !=null and ids.size() >0 ">
+                 <foreach collection="ids" open=" and id in (" close=")" item="id" separator="," >
+                     ${id}
+                 </foreach>
+             </if>
+        </where>
+    </select>
+    <select id="getProductByList" resultType="product"  >
+        <include refid="defaultSql"></include>
+        <where>
+            <if test=" list !=null and list.size() >0 ">
+                <foreach collection="list" open=" and id in (" close=")" item="id" separator="," >
+                    ${id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="getProductByArray" resultType="product" >
+        <include refid="defaultSql"></include>
+        <where>
+            <if test=" array !=null and array.length >0 ">
+                <foreach collection="array" open=" and id in (" close=")" item="id" separator="," >
+                    ${id}
+                </foreach>
+            </if>
+        </where>
     </select>
 </mapper>
 

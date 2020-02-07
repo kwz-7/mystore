@@ -5,9 +5,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.stereotype.Repository;
 
 @SpringBootApplication
-@MapperScan(basePackages = "com.mystore.mapper")
+@MapperScan(basePackages = "com.mystore.mapper" ,annotationClass = Repository.class)
 public class MystoreApplication extends SpringBootServletInitializer {
 
 	@Override

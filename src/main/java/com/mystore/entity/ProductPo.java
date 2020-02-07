@@ -3,6 +3,7 @@ package com.mystore.entity;
 import org.apache.ibatis.type.Alias;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by FireCode on 2020/1/21.
@@ -17,7 +18,27 @@ public class ProductPo implements Serializable{
     private double price;
     private int version;
     private String note;
+    private ArrayList<Long> ids;
 
+    public ArrayList<Long> getIds() {
+        return ids;
+    }
+
+    public void setIds(ArrayList<Long> ids) {
+        this.ids = ids;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductPo{" +
+                "id=" + id +
+                ", productName='" + productName + '\'' +
+                ", stock=" + stock +
+                ", price=" + price +
+                ", version=" + version +
+                ", note='" + note + '\'' +
+                '}';
+    }
 
     public Long getId() {
         return id;

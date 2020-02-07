@@ -10,7 +10,7 @@
     </resultMap>-->
    <insert id="insertPurchaseRecord" parameterType="purchaseRecord" >
        INSERT INTO T_PURCHASE_RECORD(USER_ID,PRODUCT_ID,PRICE,QUANTITY,SUM,PURCHASE_DATE,NOTE)
-       VALUES(#{USERID},#{PRODUCTID},#{PRICE},#{QUANTITY},#{SUM},NOW(),#{NOTE})
+       VALUES(#{userId},#{productId},#{price},#{quantity},#{sum},NOW(),#{note})
    </insert>
 </mapper>
 

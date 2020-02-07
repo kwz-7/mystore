@@ -28,12 +28,19 @@ public class PurchaseServiceImpl implements PurchaseService {
         if(productpo.getStock()<quantity){
             return false;
         }
+        int version=productpo.getVersion();
       //扣减库存
-        productMappers.decreaseProduct(quantity,productId);
+       int result= productMappers.decreaseProduct(quantity,productId,version);
+        if (result !=1)
+        {
+            System.out.println("更新失败了");
+            return false;
+        }
         //初始化购买信息
         PurchaseRecordPo po = initPurchaseRecord(userId, productpo, quantity);
         //插入购买记录
         purchaseRecordMapper.insertPurchaseRecord(po);
+        System.out.println("插入记录成功");
         return true;
     }
     //初始化购买信息

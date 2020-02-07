@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 /**
  * Created by FireCode on 2020/1/23.
  */
-@Mapper
+@Repository
 public interface PurchaseRecordMapper {
     public  int insertPurchaseRecord(PurchaseRecordPo po);
 }

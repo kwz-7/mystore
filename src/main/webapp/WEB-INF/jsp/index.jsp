@@ -9,17 +9,21 @@
 <html>
 <head>
     <title>测试抢购商品</title>
-    <script type="text/javascript" src="https://code.jquery.com/j.query-3.2.1.min.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
 
     <script type="text/javascript" >
-        var params={
-            userId :1,
-            productId :1,
-            quantity:3
-        };
-        $.post("./purchase",params,function (result) {
-            alert(result.message);
-        })
+        for(var i=1 ;i<=10000;i++){
+            var params={
+                userId :1,
+                productId :1234,
+                quantity:1
+            };
+
+            $.post("./purchase",params,function (result) {
+              /*  alert("购买成功");*/
+            })
+        }
+        alert("购买成功");
 
     </script>
 </head>

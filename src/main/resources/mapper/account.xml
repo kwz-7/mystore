@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mystore.mapper.AccountMapper" >
+   <sql id="account">
+       select ID,UID,MOney from t_account
+   </sql>
+    <resultMap id="accountUser" type="account" >
+        <id column="id" property="id"></id>
+        <result column="uid" property="uId"></result>
+        <result column="money" property="money"></result>
+        <association property="user" javaType="user" >
+            <id column="aid" property="id"></id>
+            <result column="user_name" property="userName"></result>
+            <result column="sex" property="sex"></result>
+        </association>
+    </resultMap>
+    <resultMap id="getAccounts" type="account">
+          <id column="id" property="id"></id>
+          <result column="uid" property="uId"></result>
+          <result column="money" property="money"></result>
+        <!--  一对一关系映射，配置封装user的内容
+               select 属性指定的内容：查询用户的唯一标识，定位到userMapper.xml中的根据用户id查询用户的方法
+               column 属性指定的内容：用户根据id查询时，所需的参数值
+        -->
+         <association property="user" column="uid" javaType="user" select="com.mystore.mapper.UserMapper.getUserById"></association>
+    </resultMap>
+    <select id="getAllAccounts" resultMap="getAccounts">
+           select *From t_account
+    </select>
+
+    <select id="getByUid" parameterType="Integer" resultMap="accountUser">
+         SELECT  a.ID,u.user_name,u.sex,a.MONEY FROM t_user u ,t_account a WHERE u.ID=a.UID and
+          a.UID =#{UID}
+    </select>
+    <select id="getByUserId" parameterType="Integer" resultType="account">
+        <include refid="account"></include>
+        where uid=#{uid}
+    </select>
+
+</mapper>
+

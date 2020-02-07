@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mystore.mapper.RoleMapper" >
+   <resultMap id="roleUser" type="role">
+          <id column="id" property="id"></id>
+          <result column="role_name" property="roleName"></result>
+       <result column="role_desc" property="roleDesc"></result>
+       <collection property="users" ofType="user">
+           <id column="aid" property="id"></id>
+           <result column="user_name" property="userName"></result>
+           <result column="sex" property="sex"></result>
+       </collection>
+   </resultMap>
+    <select id="getRoleAll" resultMap="roleUser" >
+         SELECT r.role_name,r.ROLE_DESC,u.id as aid,u.user_name,u.sex FROM t_role r LEFT  JOIN user_role ur ON r.ID=ur.RID
+          LEFT  JOIN t_user u ON ur.UID=u.ID
+    </select>
+</mapper>
+
